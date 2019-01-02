@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+typedef int bool;
+#define true 1
+#define false 0
 void fullscreen()
 {
 	system("mode 1000");			// incrase window size 
@@ -27,28 +30,37 @@ void MoveCursorNextRow()
 {
 	printf("\n                                                                                     ");
 }
+void CreateNewUser(char *username)		//adding new user 
+{
+	FILE *users1;
+	fopen_s(&users1, "users.txt", "w");
+	if (users1) {
+		fprintf_s(users1, "%s \n", username);
+		fclose(users1);
+	}
+}
 void LogIn()
 {
 	MoveCursorToMid(); 
-	char  name[20];
-  	printf("Unesite korisnicko ime:  \n   "); 
-	MoveCursorNextRow(); 
-	fgets(name, 20, stdin);
-	
+ 	if (IsThereUser()==false) {
+ 		char *name=malloc(sizeof(char)*20);
+		printf("Unesite korisnicko ime:  \n   ");
+		MoveCursorNextRow();
+		fgets(name, 20, stdin);
+		CreateNewUser(name);
+	}							
 }
-
-boolean IsUserValid(char username)
+bool IsThereUser()	
 {
 	FILE *users; 
-	fopen_s(&users,"users.txt", "r");
-	char buffer[20]; 
-	if (users)
+	fopen_s(&users,"users.txt", "r");	// check 
+	char  buffer[20];					// for first  playing  
+	if (users)							 
 	{ 
-		for (; ((fscanf_s(users, "%s", buffer) <= 0)) ; ) 
-			if (strcmp(buffer, username) == 0) return 1;
+		if(fgets(buffer, 20, users )>=0) return true; 
+		fclose(users);
 	}
-	else 
-		return 0; 
+	else return false; 
 }
 
 
