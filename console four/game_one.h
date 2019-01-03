@@ -1,14 +1,28 @@
-#pragma once
 #include <stdio.h>
 #include <time.h>
 #include <Windows.h>
+int dodjelaBodova(int brojPokusaja)
+{
+	return (100 / brojPokusaja);
+}
+unsigned nasumicanBroj(int namjestanje)
+{
+	unsigned nasumican;
+	time_t t;
+	srand((unsigned)time(&t));
+	return nasumican = rand() % namjestanje;
+}
+int postotak(int pobijeda, int gubitak)
+{
+	double ukupnoIgranja = pobijeda + gubitak;
+	float postotakP, postotakG;
+	postotakP = (pobijeda / ukupnoIgranja) * 100;
+	postotakG = (gubitak / ukupnoIgranja) * 100;
+	return (postotakG - postotakP);
+}
 void prvaIgra(int brojIgranja, int pobijeda, int gubitak)
 {
-	proces(brojIgranja, pobijeda, gubitak);
-}
-void proces(int brojIgranja, int pobijeda, int gubitak)
-{
-	unsigned unos = 101, rezultat = nasumicanBroj(101);
+	unsigned unos = 101, rezultat = nasumicanBroj(11);
 	int brojac = 5, rb = 1, posto = postotak(pobijeda, gubitak);
 	printf("Potrebno je da pogodite broj u intervalu 0-100\n\n");
 	unsigned namjestanje = 6;
@@ -21,18 +35,18 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 
 	while (brojac > 0 && rezultat != unos)
 	{
-			do
+		do
+		{
+			printf("Unesite %d. broj: ", rb++);
+			scanf_s("%u", &unos);
+			if ((unos > 100) || (unos < 0))
 			{
-				printf("Unesite %d. broj: ", rb++);
-				scanf("%u", &unos);
-				if ((unos > 100) || (unos < 0))
-				{
-					printf("\nUneseni broj nije u datom intervalu.\n\n");
-					rb--;
-				}
-			} while ((unos > 100) || (unos < 0));
+				printf("\nUneseni broj nije u datom intervalu.\n\n");
+				rb--;
+			}
+		} while ((unos > 100) || (unos < 0));
 
-		if (unos > rezultat || brojac == namjestanje) 
+		if (unos > rezultat || brojac == namjestanje)
 		{
 			if (brojac == namjestanje)
 			{
@@ -43,7 +57,7 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 			}
 			else
 				printf("Broj je manji.\n\n");
-			
+
 		}
 		else if (unos < rezultat)
 		{
@@ -57,7 +71,7 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 			else
 				printf("Broj je veci.\n\n");
 		}
-		else if (unos == rezultat)	
+		else if (unos == rezultat)
 		{
 			if ((brojIgranja > 3) && (posto < 40))
 			{
@@ -80,24 +94,5 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 			printf("Osvojili ste 0 bodova.\n");
 		}
 	}
-}			
-// help functions 
-int dodjelaBodova(int brojPokusaja)
-{
-	return (100 / brojPokusaja);
 }
-unsigned nasumicanBroj(int namjestanje)
-{
-	unsigned nasumican;
-	time_t t;
-	srand((unsigned)time(&t));
-	return nasumican = rand() % namjestanje;
-}
-int postotak(int pobijeda, int gubitak)
-{
-	double ukupnoIgranja = pobijeda + gubitak;
-	float postotakP, postotakG;
-	postotakP = (pobijeda / ukupnoIgranja) * 100;
-	postotakG = (gubitak / ukupnoIgranja) * 100;
-	return (postotakG - postotakP);
-}
+ 
