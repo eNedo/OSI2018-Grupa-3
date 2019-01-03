@@ -19,7 +19,7 @@ void prvaIgra(int brojIgranja, int pobijeda, int gubitak)
 
 void proces(int brojIgranja, int pobijeda, int gubitak)
 {
-	unsigned unos = 101, rezultat = nasumicanBroj(11);
+	unsigned unos = 101, rezultat = nasumicanBroj(101);
 	int brojac = 5, rb = 1, posto = postotak(pobijeda, gubitak);
 	printf("Potrebno je da pogodite broj u intervalu 0-100\n\n");
 	unsigned namjestanje = 6;
