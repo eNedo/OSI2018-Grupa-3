@@ -2,21 +2,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <Windows.h>
-
-void prvaIgra(int brojIgranja, int pobijede, int gubici);		// brojIgranja - ukupan broj pokretanja PRVE IGRE od strane korisnika; broj pobijeda, broj gubitaka
-
-void proces(int, int, int);
-unsigned nasumicanBroj(int);
-int dodjelaBodova(int);
-int postotak(int, int);
-
-
-
 void prvaIgra(int brojIgranja, int pobijeda, int gubitak)
 {
 	proces(brojIgranja, pobijeda, gubitak);
 }
-
 void proces(int brojIgranja, int pobijeda, int gubitak)
 {
 	unsigned unos = 101, rezultat = nasumicanBroj(101);
@@ -91,16 +80,12 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 			printf("Osvojili ste 0 bodova.\n");
 		}
 	}
-}
-
-
-//Pomocne funkcije
-
+}			
+// help functions 
 int dodjelaBodova(int brojPokusaja)
 {
 	return (100 / brojPokusaja);
 }
-
 unsigned nasumicanBroj(int namjestanje)
 {
 	unsigned nasumican;
@@ -108,7 +93,6 @@ unsigned nasumicanBroj(int namjestanje)
 	srand((unsigned)time(&t));
 	return nasumican = rand() % namjestanje;
 }
-
 int postotak(int pobijeda, int gubitak)
 {
 	double ukupnoIgranja = pobijeda + gubitak;
