@@ -16,7 +16,7 @@ void ShowStatistics()
 	{
 		cls();
 		MoveCursorToMid();
-		for (int i = 0; i > 10; i++)
+		for (int i = 0; 9>i; i++)
 		{
 			fscanf_s(stats,"%d %d %s", &game_id, &points, date);
 			if (game_id == 1) printf("%d)Pogadjanje broja ", i + 1);
