@@ -5,7 +5,8 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-typedef int bool;
+void ShowStatistics(); 
+ typedef int bool;
 #define true 1
 #define false 0
 void MoveCursorNextRow()
@@ -56,13 +57,36 @@ void MainMenu()
 		if ( (err==1) && ((isdigit(f)==0) || (f<1) || (f>6)) )	// check is input valid
 						{
 						MoveCursorNextRow();
-						printf("Greska! Unesite validan broj! ;) \n");
+						printf("Greska! Unesite validan broj! ;)");
 						err = 0; 
+						Sleep(500); 
+						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"); 
+						printf("                                                                ");
+						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 						}
+
 	}	
-	printf("%c", x); 
-	// to be continued... \m/
- 
+	switch (x)
+	{
+	case 1 : 
+		cls(); 
+		//prvaIgra()
+		break; 
+	case 2: 
+		//drugaigra()
+		break; 
+	case 3: 
+		break; 
+	case 4: 
+		break; 
+	case 5: 
+		ShowStatistics(); 
+		break; 
+	case 6:
+		return; 
+		break; 
+	}
 
 }
 void CreateNewUser(char *username)		//adding new user 
@@ -109,5 +133,4 @@ bool IsThereUser()
 	}
 	else return false; 
 }
-//
 
