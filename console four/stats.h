@@ -10,7 +10,6 @@
 int length(char *str)
 {
 	int characterCount = 0;
-
 	while (str[characterCount] != '\0')
 	{
 		characterCount++;
@@ -44,7 +43,6 @@ int indexOf(char *string, char *subString, int start)
 			break;
 		}
 	}
-
 	return indexOf;
 }
 /*Helper function that returns the count of a particular delimiter in the string passed*/
@@ -66,7 +64,6 @@ int countOf(char *string, char *searchString)
 		}
 		start = index + 1;
 	}
-
 	return delimiterTally;
 }
 /*Helper function that returns the substring*/
@@ -84,16 +81,11 @@ char* subString(char* string, int start, int length)
 /*Main driver function*/
 char *string_replace(char *string, char *replaceFor, char *replaceWith)
 {
-	if (string == NULL || replaceFor == NULL || replaceWith == NULL)
-	{
-		return NULL;
-	}
+	if (string == NULL || replaceFor == NULL || replaceWith == NULL) return NULL;
 	int index;
 	int subStringCount = countOf(string, replaceFor);
 	/*One option to free the allocated memory here is for the caller to handle it.
-
 	Another approach is to have the buffer as a method input parameter to make our intentions of who's
-
 	going to handle the freeing part very clear
 	*/
 	char *replacedString = (char*)malloc(length(string) - length(replaceFor) * subStringCount + length(replaceWith) * subStringCount);
