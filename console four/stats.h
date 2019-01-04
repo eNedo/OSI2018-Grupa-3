@@ -81,7 +81,7 @@ char* subString(char* string, int start, int length)
 /*Main driver function*/
 char *string_replace(char *string, char *replaceFor, char *replaceWith)
 {
-	if (string == NULL || replaceFor == NULL || replaceWith == NULL) return NULL;
+	if (string == NULL || replaceFor == NULL || replaceWith == NULL)	return NULL;
 	int index;
 	int subStringCount = countOf(string, replaceFor);
 	/*One option to free the allocated memory here is for the caller to handle it.
@@ -156,6 +156,10 @@ void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 		cls(); printf("Critical error! Reinstal game! \n"); 
 	}
 }
+void CSV()
+{
+
+}
 void ShowStatistics()
 {
 	FILE *statsf; fopen_s(&statsf, "statistics.txt", "r");
@@ -183,6 +187,29 @@ void ShowStatistics()
 		fopen_s(&statsf, "statistics.txt", "r+");  fseek(statsf, 460, SEEK_CUR);
 		for (int i = 0; i < 15; i++) fprintf(statsf, "                                           \n");   
 		fclose(statsf);				// remove more than 10. entries 
+		MoveCursorNextRow(); 
+		printf("(1) Povratak na glavni meni!    (2) Sacuvajte statistiku u CSV fajl! (3) Izlaz iz aplikacije!"); 
+		char b; 
+		for (;;) {
+			scanf_s("%c", &b);
+			if ((isdigit(b) > 0)) {
+				int temp;
+				temp = atoi(b); //error
+				if ((temp >= 1) && (temp <= 3)) break; // troubleshoting tomorow... 
+			} 
+			else
+			{
+				printf("\b "); 
+			} 
+		}
+		int bint = atoi(b); 
+		switch (bint)
+		{
+		case 1: MainMenu();		break;
+		case 2:	CSV();			break;
+		case 3:	break;
+		}
+
 	}
 	else
 	{
