@@ -8,24 +8,30 @@
 #include <ctype.h>
 void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 {
-	FILE *stats; fopen_s(&stats, "statistics.txt", "r+");
+	FILE *stats; fopen_s(&stats, "statistics.txt", "r");
+	FILE *tmp; fopen_s(&tmp, "tmp.txt", "w"); 
 	if (stats) {
 		int gameidx, pointsx, numberofwinsx;
 		char *timex = malloc(26); 
-		rewind(stats);
+		int counter = 0;
 		for (int i = 0; i < 10; i++)
 		{
-			fscanf_s(stats, "%d %d %d %s", &gameidx, &pointsx, &numberofwinsx,timex,26); 
-			printf("%d %d %d %s", gameidx, pointsx, numberofwinsx, timex); 
-					if (number_of_wins>numberofwinsx)		// writing in order  
+			fscanf_s(stats, "%d %d %d %s", &gameidx, &pointsx, &numberofwinsx,timex,30);
+					if (number_of_wins>numberofwinsx && counter==0)		// writing in order  
 					{	  
-						fprintf_s(stats, "%d%d%d%s", game_id, points, number_of_wins, time_played);  
-						break;  // needs more work
-					}			// rewriting line ^
-		
-		fclose(stats);			// end of work with stats file 
-		}
-
+						fprintf_s(tmp, "%d %d %d %s\n", game_id, points, number_of_wins, time_played,30);  
+						counter++; // only one edit of line 
+					}	
+					else
+					{
+						fprintf_s(tmp, "%d %d %d %s", gameidx, pointsx, numberofwinsx, timex, 30);
+						fprintf_s(tmp, "\n");				//needs more work 
+					}
+ 		}
+		fclose(stats);
+		fclose(tmp);
+		remove("statistics.txt");
+		rename("tmp.txt", "statistics.txt");
 	}
 	else
 	{
