@@ -127,25 +127,26 @@ void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 	FILE *stats; fopen_s(&stats, "statistics.txt", "r");
 	FILE *tmp; fopen_s(&tmp, "tmp.txt", "w"); 
 	if (stats) {
-		int gameidx, pointsx, numberofwinsx;
-		char *timex = malloc(30);
+		int gameidx[10], pointsx[10], numberofwinsx[10];
+		char **timex = malloc(sizeof(char**));
+		for (int i = 0; i < 10; i++) timex[i] = malloc(sizeof(char*)); 
 		char *a = malloc(1); char *b = malloc(1); a = "-"; b = " "; 
 		time_played = string_replace(time_played, b, a); 
- 		int counter = 0;
-		for (int i = 0; i < 10; i++)
-		{
-			fscanf_s(stats, "%d %d %d %s", &gameidx, &pointsx, &numberofwinsx,timex,30);
-					if (number_of_wins>numberofwinsx && counter==0)		// writing in order  
-					{	  
-						fprintf_s(tmp, "%d %d %d %s", game_id, points, number_of_wins, time_played,30);  
-						counter++; //edit one line only, rewrite else 
-					}	
-					else
-					{
-						fprintf_s(tmp, "%d %d %d %s", gameidx, pointsx, numberofwinsx, timex,30);
-						fprintf_s(tmp, "\n");				  
-					}
- 		}
+		for (int i = 0; i < 10; i++)			// input stats from file 
+			fscanf_s(stats, "%d %d %d %s", &gameidx[i], &pointsx[i], &numberofwinsx[i],timex[i],30);
+		gameidx[10] = game_id; pointsx[10] = points; numberofwinsx[10] = number_of_wins; timex[10] = time_played;
+		for (int i=0; i<=10; i++) 
+			for (int j=0; j<=10; j++)				// sorting stats data 
+				if (pointsx[i] > pointsx[j])
+				{
+					int temp1, temp2, temp3;
+					temp1 = pointsx[i]; pointsx[i] = pointsx[j]; pointsx[j] = temp1;
+					temp2 = numberofwinsx[i]; numberofwinsx[i] = numberofwinsx[j]; numberofwinsx[j] = temp2;
+					temp3 = gameidx[i]; gameidx[i] = gameidx[j]; gameidx[j] = temp3;
+					char *temp4 = timex[i]; timex[i] = timex[j]; timex[j] = temp4;
+				}
+		for (int i = 0; i < 10; i++)				//output to file 
+				fprintf_s(tmp, "%d %d %d %s \n", gameidx[i], pointsx[i], numberofwinsx[i], timex[i], 30);
 		fclose(stats);
 		fclose(tmp);
 		remove("statistics.txt");
@@ -194,7 +195,7 @@ void ShowStatistics()
 			scanf_s("%c", &b);
 			if ((isdigit(b) > 0)) {
 				int temp;
-				temp = atoi(b); //error
+				temp = atoi(&b); //error
 				if ((temp >= 1) && (temp <= 3)) break; // troubleshoting tomorow... 
 			} 
 			else
@@ -202,7 +203,7 @@ void ShowStatistics()
 				printf("\b "); 
 			} 
 		}
-		int bint = atoi(b); 
+		int bint = atoi(&b); 
 		switch (bint)
 		{
 		case 1: MainMenu();		break;
