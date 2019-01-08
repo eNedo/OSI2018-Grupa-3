@@ -6,6 +6,7 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include "CSV.h"
 /*Returns the length of the str passed*/
 int length(char *str)
 {
@@ -126,18 +127,18 @@ void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 {
 	FILE *stats; fopen_s(&stats, "statistics.txt", "r");
 	FILE *tmp; fopen_s(&tmp, "tmp.txt", "w"); 
-	if (stats) {
-		int gameidx[10], pointsx[10], numberofwinsx[10];
-		char **timex = malloc(sizeof(char**));
-		for (int i = 0; i < 10; i++) timex[i] = malloc(sizeof(char*)); 
+	if (stats && tmp) {
+		int gameidx[41], pointsx[41], numberofwinsx[41];
+		char **timex = (char**)malloc(sizeof(char**)*41);
+		for (int i = 0; i < 41; i++) timex[i] =(char*) malloc(sizeof(char*)); 
 		char *a = malloc(1); char *b = malloc(1); a = "-"; b = " "; 
 		time_played = string_replace(time_played, b, a); 
-		for (int i = 0; i < 10; i++)			// input stats from file 
+		for (int i = 0; i < 41; i++)			// input stats from file 
 			fscanf_s(stats, "%d %d %d %s", &gameidx[i], &pointsx[i], &numberofwinsx[i],timex[i],30);
-		gameidx[10] = game_id; pointsx[10] = points; numberofwinsx[10] = number_of_wins; timex[10] = time_played;
-		for (int i=0; i<=10; i++) 
-			for (int j=0; j<=10; j++)				// sorting stats data 
-				if (pointsx[i] > pointsx[j])
+		gameidx[40] = game_id; pointsx[40] = points; numberofwinsx[40] = number_of_wins; timex[40] = time_played;
+		for (int i=0; i<=40; i++) 
+			for (int j=0; j<=40; j++)				// sorting stats data 
+				if ((pointsx[i] > pointsx[j]) && (game_id==gameidx[i]))
 				{
 					int temp1, temp2, temp3;
 					temp1 = pointsx[i]; pointsx[i] = pointsx[j]; pointsx[j] = temp1;
@@ -145,8 +146,11 @@ void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 					temp3 = gameidx[i]; gameidx[i] = gameidx[j]; gameidx[j] = temp3;
 					char *temp4 = timex[i]; timex[i] = timex[j]; timex[j] = temp4;
 				}
-		for (int i = 0; i < 10; i++)				//output to file 
-				fprintf_s(tmp, "%d %d %d %s \n", gameidx[i], pointsx[i], numberofwinsx[i], timex[i], 30);
+		for (int i = 0; i < 41; i++)				//output to file 
+				fprintf_s(tmp, "%d %d %d %s\n", gameidx[i], pointsx[i],numberofwinsx[i], timex[i],30);
+		free(a); free(b); 
+		for (int i = 0; i < 41; i++)	free(timex[i]); 
+		free (timex);
 		fclose(stats);
 		fclose(tmp);
 		remove("statistics.txt");
@@ -157,10 +161,6 @@ void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 		cls(); printf("Critical error! Reinstal game! \n"); 
 	}
 }
-void CSV()
-{
-
-}
 void ShowStatistics()
 {
 	FILE *statsf; fopen_s(&statsf, "statistics.txt", "r");
@@ -169,30 +169,51 @@ void ShowStatistics()
 	char *date=malloc(26); 
 	if (statsf)
 	{
-		cls();
+		cls(); 
 		MoveCursorToMid();
-		printf("    Igra                 Broj poena         Broj pobjeda     Datum igranja   ");
-		MoveCursorNextRow();
-
-		for (int i = 0; i < 10; i++)
+		printf("Izaberite koju statistiku zelite!");
+		MoveCursorNextRow(); 
+		printf("    *********************************\n");  MoveCursorNextRow();
+		printf("(1) Pogadjanje zamisljenog broja \n");  MoveCursorNextRow();
+		printf("(2) Kviz                         \n");  MoveCursorNextRow();
+		printf("(3) Loto                         \n");  MoveCursorNextRow();
+		printf("(4) IX-OX                        \n");  MoveCursorNextRow();
+		printf("*********************************\n");  MoveCursorNextRow();
+		char tempx; 
+		int tempxx;
+		for (;;)
+		{
+			scanf_s("%c", &tempx, 1);
+			if (isdigit(tempx) > 0) { 
+				tempxx = atoi(&tempx);
+				if (tempxx <= 4 && tempxx >= 1) 
+					break; }
+		}
+		cls(); 
+		switch (tempxx)
+		{
+		case (1):
+			printf("Pogadjanje zamisljenog broja   \n"); break;
+		case(2):
+			printf("Kviz                           \n"); break;
+		case(3):
+			printf("Loto                           \n"); break;
+		case(4):
+			printf("IX - OX                        \n"); break;
+		} 
+ 		for (int i = 0; i < 40; i++)
 		{
 			fscanf_s(statsf, "%d%d%d%s", &game_id, &points, &num_of_wins, date,26);
-			if (game_id == 1) printf("%d)Pogadjanje broja ", i + 1);
-			else if (game_id == 2) printf("%d)Kviz             ", i + 1);
-			else if (game_id == 3) printf("%d)Loto             ", i + 1);
-			else if (game_id == 4) printf("%d)IX-OX            ", i + 1);
-			printf("         %d                 %d              %s \n", points, num_of_wins,date);
-			MoveCursorNextRow();
-		}
+			if (game_id == tempxx) printf("%d | %d | %s \n", points, num_of_wins,date);
+ 		}
+		printf("\nBroj poena|Broj pobjeda|Datum igranja\n"); 
  		fclose(statsf); 
-		fopen_s(&statsf, "statistics.txt", "r+");  fseek(statsf, 460, SEEK_CUR);
-		for (int i = 0; i < 15; i++) fprintf(statsf, "                                           \n");   
-		fclose(statsf);				// remove more than 10. entries 
-		MoveCursorNextRow(); 
+		free(date);
+ 		MoveCursorNextRow(); 
 		printf("(1) Povratak na glavni meni!    (2) Sacuvajte statistiku u CSV fajl! (3) Izlaz iz aplikacije!"); 
 		char b; 
 		for (;;) {
-			scanf_s("%c", &b);
+			scanf_s("%c", &b,1);
 			if ((isdigit(b) > 0)) {
 				int temp;
 				temp = atoi(&b); //error
@@ -206,8 +227,8 @@ void ShowStatistics()
 		int bint = atoi(&b); 
 		switch (bint)
 		{
-		case 1: MainMenu();		break;
-		case 2:	CSV();			break;
+		case 1: MainMenu();			break;
+		case 2:	CSV(); MainMenu();  break;
 		case 3:	break;
 		}
 
