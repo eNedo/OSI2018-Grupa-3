@@ -123,6 +123,75 @@ char *string_replace(char *string, char *replaceFor, char *replaceWith)
 	replacedString[count] = '\0'; 
 	return replacedString;
 }
+int NumberOfPlays()
+{
+	FILE *dat; fopen_s(&dat, "config.txt", "r"); 
+	if (dat != NULL) {
+		int x1, x2, x3; fscanf_s(dat, "%d %d %d", &x1, &x2, &x3); // number of plays - wins - losses
+		fclose(dat); 
+		return x1;		//plays
+	} 
+	else printf("critical error"); 
+	return -1; 
+}
+int NumberOfWins()
+{
+	FILE *dat; fopen_s(&dat, "config.txt", "r");
+	if (dat != NULL) {
+		int x1, x2, x3; fscanf_s(dat, "%d %d %d", &x1, &x2, &x3); 
+		fclose(dat);
+		return x2;	//wins
+	}
+	else printf("critical error");
+	return -1;
+}
+int NumberOfLosses()
+{
+	FILE *dat; fopen_s(&dat, "config.txt", "r");
+	if (dat != NULL) {
+		int x1, x2, x3; fscanf_s(dat, "%d %d %d", &x1, &x2, &x3); 
+		fclose(dat);
+		return x3;	//losses
+	}
+	else printf("critical error");
+	return -1;
+}
+void IncNumberOfPlays()
+{
+	FILE *dat; fopen_s(&dat, "config.txt", "r");
+	if (dat != NULL) {
+		int x1, x2, x3; fscanf_s(dat, "%d %d %d", &x1, &x2, &x3); // number of plays - wins - losses 
+		fclose(dat); 
+		fopen_s(&dat, "config.txt", "w"); 
+		fprintf_s(dat, "%d %d %d", x1+1, x2, x3);
+		fclose(dat);
+	}
+	else printf("critical error");
+}
+void IncNumberOfWins()
+{
+	FILE *dat; fopen_s(&dat, "config.txt", "r");
+	if (dat != NULL) {
+		int x1, x2, x3; fscanf_s(dat, "%d %d %d", &x1, &x2, &x3); // number of plays - wins - losses 
+		fclose(dat);
+		fopen_s(&dat, "config.txt", "w");
+		fprintf_s(dat, "%d %d %d", x1, x2+1, x3);
+		fclose(dat);
+	}
+	else printf("critical error");
+}
+void IncNumberOfLosses()
+{
+	FILE *dat; fopen_s(&dat, "config.txt", "r");
+	if (dat != NULL) {
+		int x1, x2, x3; fscanf_s(dat, "%d %d %d", &x1, &x2, &x3); // number of plays - wins - losses 
+		fclose(dat);
+		fopen_s(&dat, "config.txt", "w");
+		fprintf_s(dat, "%d %d %d", x1, x2, x3+1);
+		fclose(dat); 
+ 	}
+	else printf("critical error");
+}
 void StatsUpdate(int game_id, char *time_played, int points, int number_of_wins)
 {
 	FILE *stats; fopen_s(&stats, "statistics.txt", "r");
@@ -171,9 +240,10 @@ void ShowStatistics()
 	{
 		cls(); 
 		MoveCursorToMid();
+		MoveCursorNextRow();
 		printf("Izaberite koju statistiku zelite!");
 		MoveCursorNextRow(); 
-		printf("    *********************************\n");  MoveCursorNextRow();
+		printf("*********************************\n");  MoveCursorNextRow();
 		printf("(1) Pogadjanje zamisljenog broja \n");  MoveCursorNextRow();
 		printf("(2) Kviz                         \n");  MoveCursorNextRow();
 		printf("(3) Loto                         \n");  MoveCursorNextRow();
@@ -200,7 +270,7 @@ void ShowStatistics()
 			printf("Loto                           \n"); break;
 		case(4):
 			printf("IX - OX                        \n"); break;
-		} 
+		}	printf("\n");
  		for (int i = 0; i < 40; i++)
 		{
 			fscanf_s(statsf, "%d%d%d%s", &game_id, &points, &num_of_wins, date,26);
@@ -209,8 +279,7 @@ void ShowStatistics()
 		printf("\nBroj poena|Broj pobjeda|Datum igranja\n"); 
  		fclose(statsf); 
 		free(date);
- 		MoveCursorNextRow(); 
-		printf("(1) Povratak na glavni meni!    (2) Sacuvajte statistiku u CSV fajl! (3) Izlaz iz aplikacije!"); 
+ 		printf("                           (1) Povratak na glavni meni!        (2) Sacuvajte statistiku u CSV fajl!        (3) Izlaz iz aplikacije!   \n"); 
 		char b; 
 		for (;;) {
 			scanf_s("%c", &b,1);
