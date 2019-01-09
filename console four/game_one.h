@@ -1,250 +1,161 @@
-#pragma once
+	#pragma once
 #include <stdio.h>
-#include <stdlib.h>
-#include<conio.h>
-#include<time.h>
+#include <time.h>
+#include <Windows.h>
+#include <ctype.h>
+#include <string.h>
+
+void prvaIgra(int brojIgranja, int pobijede, int gubici);		// brojIgranja - ukupan broj pokretanja PRVE IGRE od strane korisnika; broj pobijeda, broj gubitaka
 
 
+void proces(int, int, int);
+unsigned nasumicanBroj(int);
+int dodjelaBodova(int);
+int postotak(int, int);
+int validanUnos(char*);
 
-int is_emptymat(char mat[][3],int i,int j){if(mat[i][j]=='X' || mat[i][j]=='O')return 0;else return 1;}
-int is_empty_with_text(char mat[][3],int i,int j){if(mat[i][j]=='X'|| mat[i][j]=='O'){printf("Pozicija je popunjena.");getch();return 0;}else return 1;}
-
-
-void board(char mat[][3])    //ispis
+void prvaIgra(int brojIgranja, int pobijeda, int gubitak)
 {
-    system("cls");
-    printf("\n\n\tTic Tac Toe\n\n");
-
-    printf("Player 1 (X)  -  Player 2 (O)\n\n\n");
-
-
-    printf("     |     |     \n");
-    printf("  %c  |  %c  |  %c \n",mat[0][0],mat[0][1],mat[0][2]);
-
-    printf("_____|_____|_____\n");
-    printf("     |     |     \n");
-
-    printf("  %c  |  %c  |  %c \n",mat[1][0],mat[1][1],mat[1][2]);
-
-    printf("_____|_____|_____\n");
-    printf("     |     |     \n");
-
-    printf("  %c  |  %c  |  %c \n",mat[2][0], mat[2][1],mat[2][2]);
-
-    printf("     |     |     \n\n");
+	proces(brojIgranja, pobijeda, gubitak);
 }
 
-int win(char mat[][3],char sign)
+void proces(int brojIgranja, int pobijeda, int gubitak)
 {
-    if((mat[0][0]==sign && mat[0][1]==sign && mat[0][2]==sign)
-       || (mat[1][0]==sign && mat[1][1]==sign && mat[1][2]==sign)
-       || (mat[2][0]==sign && mat[2][1]==sign && mat[2][2]==sign))
-       return 1;
-    else if((mat[0][0]==sign && mat[1][0]==sign && mat[2][0]==sign)
-       || (mat[0][1]==sign && mat[1][1]==sign && mat[2][1]==sign)
-       || (mat[0][2]==sign && mat[1][2]==sign && mat[2][2]==sign))
-       return 1;
-      else if((mat[0][0]==sign && mat[1][1]==sign && mat[2][2]==sign)
-       || (mat[2][0]==sign && mat[1][1]==sign && mat[0][2]==sign))
-       return 1;
-       else
-        return 0;
-}
-int game_over_igr(char mat[][3],int brojac)
-{
-    if(win(mat,'X'))
-    {
-        board(mat);
-        printf("X je pobjedio.\n");
-        return 1;
-    }
-      else if(win(mat,'O'))
-        {
-            board(mat);
-            printf("O je pobjedio.\n");
-            return 1;
-        }
-       else if (brojac==9)
-        {
-            board(mat);
-            printf("nereseno:)\n");
-            return 1;
-        }
-        else return 0;
-}
+	int n = 1, points = 0, numberOfWins = NumberOfWins();
+	while (n == 1)
+	{
+		unsigned unos = 101, rezultat = nasumicanBroj(101);
+		int brojac = 5, rb = 1, posto = postotak(pobijeda, gubitak), valid;
+		char unosString[11];
+		printf("*******************************************\n");
+		printf("Potrebno je pogoditi broj u intervalu 0-100\n");
+		printf("*******************************************\n\n");
+		unsigned namjestanje = 6;
+		if (brojIgranja <= 3)
+		{
+			namjestanje = nasumicanBroj(4) + 2;	// namjestanje = korak u kome korisnik pogadja
+			if (namjestanje > 6)
+				namjestanje = 5;
+		}
 
+		while (brojac > 0 && rezultat != unos)
+		{
+			do
+			{
+				printf("Unesite %d. broj: ", rb++);
+				scanf("%s", unosString);
+				valid = validanUnos(unosString);
+				if (valid == -1)
+				{
+					printf("\nUnos nije validan. Ponovite!\n\n");
+					rb--;
+				}
+				else
+					unos = valid;
+			} while (valid == -1);
 
-int is_0_1(int m)  //provjerava dali ste unjeli trazenu vrednost 0 ili 1
-{
-    if(m==1)
-        return 1;
-    else if(m==0)
-        return 1;
-        else return 0;
+			if (unos > rezultat || brojac == namjestanje)
+			{
+				if (brojac == namjestanje)
+				{
+					printf("Pogodili ste! \n\n"); brojac++;
+					rezultat = unos;
+					printf("\nTrazeni broj je broj %u.\n", unos);
+					printf("Broj osvojenih bodova je %d.\n", dodjelaBodova(rb - 1));
+				}
+				else
+					printf("Broj je manji.\n\n");
 
-}
-void game_four()
-{
-    int number_of_wins=0,points=0;
-int m=1;
-while(m)
-{
+			}
+			else if (unos < rezultat)
+			{
+				if (brojac == namjestanje)
+				{
+					printf("Pogodili ste! \n\n"); brojac++;
+					rezultat = unos;
+					printf("\nTrazeni broj je broj %u.\n", unos);
+					printf("Broj osvojenih bodova je %d.\n", dodjelaBodova(rb - 1));
+				}
+				else
+					printf("Broj je veci.\n\n");
+			}
+			else if (unos == rezultat)
+			{
+				if ((brojIgranja > 3) && (posto < 40))
+				{
+					printf("Broj je veci.\n\n");
+					rezultat++;
+				}
+				else
+				{
+					printf("Pogodili ste! \n\n"); brojac++;
+					printf("\nTrazeni broj je broj %u.\n", rezultat);
+					printf("Broj osvojenih bodova je %d.\n", dodjelaBodova(rb - 1));
+				}
+			}
+			brojac--;
 
-int counter=0,choice=0,player=2;
-char mat[3][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'}};
-char sign;
-do
-{
-    choice=0;
-    board(mat);
-player = (player % 2) ? 1 : 2;   //promena igraca
-        if(player==1)
-            {int red,colone;
-                do{
-                        board(mat);
-        printf("Player %d, enter a number:", player);
-        scanf("%d", &choice);
-        sign='X';
-red=--choice/3;
-colone=choice%3;
-choice++;}
-        while(!is_empty_with_text(mat,red,colone));   //ne dozvoljava prepisivanje preko vec postojeceg podatka u matrici
-counter++;
-if(choice<10 && choice>0)
- {mat[red][colone]=sign;}
-  else{
-        printf("Invalid move ");
-  getch();
-            player--;
-            counter--;
-        }
-        }
-        if(player==2)
-        {int c=counter;sign='O';
-        if(counter==0)
-        {mat[1][1]=sign;counter++;}   //ako nema nista ispisano u tabli racunar ce da postavi O na 5 poziciju
-        for(int k=0;k<3;k++)    //kompletan blok sluzi za provjeru dali se u nekom redu nalaze dva O podatka
-                for(int i=0;i<3;i++)
-                for(int j=0;j<3;j++)
-            {
-                if(i==k && c==counter)
-                {
-                    if((mat[i][0]==sign) && (mat[i][1]==sign) ){if(is_emptymat(mat,i,2)){mat[i][2]='O';counter++;}}
-                    else if(mat[i][0]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,1)){mat[i][1]='O';counter++;}}
-                        else if(mat[i][1]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,0)){mat[i][0]='O';counter++;}}
-                }
-            }
-
-for(int k=0;k<3;k++) //kompletan blok sluzi za provjeru dali se u nekom od redova nalaze dva O podatka
-                for(int i=0;i<3;i++)
-                for(int j=0;j<3;j++)
-            {
-                if(j==k && c==counter)
-                {
-                    if((mat[0][j]==sign) && (mat[1][j]==sign) ){if(is_emptymat(mat,2,j)){mat[2][j]='O';counter++;}}
-                    else if(mat[0][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,1,j)){mat[1][j]='O';counter++;}}
-                        else if(mat[1][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,0,j)){mat[0][j]='O';counter++;}}
-                }
-            }
-            if(c==counter) //provjera dijagonala za O
-            {
-                if(mat[0][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,2)){mat[2][2]='O';counter++;}}
-               else if(mat[0][0]==sign && mat[2][2]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
-               else if(mat[1][1]==sign && mat[2][2]==sign){if(is_emptymat(mat,0,0)){mat[0][0]='O';counter++;}}
-
-              else if(mat[0][2]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,0)){mat[2][0]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,0,2)){mat[0][2]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[2][0]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
-            }
-            sign='X';
-for(int k=0;k<3;k++) //provjera dali se u nekom od redova nalaze dva X podatka
-                for(int i=0;i<3;i++)
-                for(int j=0;j<3;j++)
-            {
-                if(i==k && c==counter)
-                {
-                    if((mat[i][0]==sign) && (mat[i][1]==sign) ){if(is_emptymat(mat,i,2)){mat[i][2]='O';counter++;}}
-                    else if(mat[i][0]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,1)){mat[i][1]='O';counter++;}}
-                        else if(mat[i][1]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,0)){mat[i][0]='O';counter++;}}
-                }
-            }
-
-for(int k=0;k<3;k++) //provera dali se u nekoj od kolona nalaze dva X podatka
-                for(int i=0;i<3;i++)
-                for(int j=0;j<3;j++)
-            {
-                if(j==k && c==counter)
-                {
-                    if((mat[0][j]==sign) && (mat[1][j]==sign) ){if(is_emptymat(mat,2,j)){mat[2][j]='O';counter++;}}
-                    else if(mat[0][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,1,j)){mat[1][j]='O';counter++;}}
-                        else if(mat[1][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,0,j)){mat[0][j]='O';counter++;}}
-                }
-            }
-            if(c==counter)
-            {
-                if(mat[0][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,2)){mat[2][2]='O';counter++;}}
-               else if(mat[0][0]==sign && mat[2][2]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
-               else if(mat[1][1]==sign && mat[2][2]==sign){if(is_emptymat(mat,0,0)){mat[0][0]='O';counter++;}}
-
-              else if(mat[0][2]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,0)){mat[2][0]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,0,2)){mat[0][2]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[2][0]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
-            }
-                        sign='O';
-for(int k=0;k<3;k++)//provera redova u kojima se nalazi samo jeda O podatak
-                for(int i=0;i<3;i++)
-                for(int j=0;j<3;j++)
-            {
-                if(i==k && c==counter)
-                {
-                    if((mat[i][0]==sign) && is_emptymat(mat,i,1) && is_emptymat(mat,i,2) ){{mat[i][2]='O';counter++;}}
-                    else if(mat[i][1]==sign && is_emptymat(mat,i,0) && is_emptymat(mat,i,2)){{mat[i][2]='O';counter++;}}
-                        else if(mat[i][2]==sign && is_emptymat(mat,i,0) && is_emptymat(mat,i,1)){{mat[i][1]='O';counter++;}}
-                }
-            }
-
-for(int k=0;k<3;k++) //provera kolona u kojima se nalazi samo jedan O podatak
-                for(int i=0;i<3;i++)
-                for(int j=0;j<3;j++)
-                    if(j==k && c==counter)
-            {
-
-                    if((mat[0][j]==sign) && is_emptymat(mat,1,j) && is_emptymat(mat,2,j) ){{mat[2][j]='O';counter++;}}
-                    else if(mat[1][j]==sign && is_emptymat(mat,0,j) && is_emptymat(mat,2,j)){{mat[2][j]='O';counter++;}}
-                        else if(mat[2][j]==sign && is_emptymat(mat,0,j) && is_emptymat(mat,1,j)){{mat[1][j]='O';counter++;}}
-            }
-
-             for(int f=1;f<10 && c==counter;f++) //popunjavanje prve prazne pozicije
-                {int red,colone;
-          red=--f/3;
-          colone=f%3;
-          f++;
-
-                    if(is_emptymat(mat,red,colone))
-          {
-              mat[red][colone]='O';
-              counter++;
-            }
-          }
-             }
-
-
-
-        player++;
-        if(win(mat,'X'))
-            number_of_wins++;
-
-}
-while(!game_over_igr(mat,counter));
-
-do
-    {printf("New game: Yes[1] No[0]:");scanf("%d",&m);}while(!is_0_1(m));
-
-}
-int game_id=4;
-points=number_of_wins;
-StatsUpdate(game_id,Time(),points,number_of_wins);
-
+			if (brojac == 0)
+			{
+				printf("\nIzgubili ste. ");
+				printf("\nTrazeni broj je broj %u.\n", rezultat);
+				printf("Osvojili ste 0 bodova.\n");
+			}
+		}
+		if (brojac > 0)
+		{
+			points += dodjelaBodova(rb - 1);
+			numberOfWins++;
+		}
+		else if(brojac == 0)
+			IncNumberOfLosses();
+		printf("\n\n<1> - revans\t<0> - glavni meni\n");
+		char c[3] = "1";
+		scanf("%s", c);
+		if (c[0] == '0')											//Ako je brojac == 0 onda je izgubio
+		{
+			StatsUpdate(1, Time(), points, numberOfWins)
+			system("CLS");
+			MainMenu();
+		}
+		else if (c[0] == '1')
+			system("CLS");
+	}
 }
 
+//Pomocne funkcije
 
+int dodjelaBodova(int brojPokusaja)
+{
+	return (100 / brojPokusaja);
+}
+
+unsigned nasumicanBroj(int namjestanje)
+{
+	unsigned nasumican;
+	time_t t;
+	srand((unsigned)time(&t));
+	return nasumican = rand() % namjestanje;
+}
+
+int postotak(int pobijeda, int gubitak)
+{
+	double ukupnoIgranja = pobijeda + gubitak;
+	float postotakP, postotakG;
+	postotakP = (pobijeda / ukupnoIgranja) * 100;
+	postotakG = (gubitak / ukupnoIgranja) * 100;
+	return (postotakG - postotakP);
+}
+
+int validanUnos(char* p)
+{
+	if ((strlen(p) > 2) && (strcmp(p, "101") >= 0))
+		return -1;
+	if (p[0] == '-')
+		return -1;
+	for (int i = 0; i < strlen(p); i++)
+		if (!isdigit(p[i]))
+			return -1;
+	int res = atoi(p);
+	return res;
+}
