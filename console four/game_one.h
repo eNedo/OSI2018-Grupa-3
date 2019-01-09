@@ -1,4 +1,4 @@
-	#pragma once
+#pragma once
 #include <stdio.h>
 #include <time.h>
 #include <Windows.h>
@@ -31,7 +31,7 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 		printf("Potrebno je pogoditi broj u intervalu 0-100\n");
 		printf("*******************************************\n\n");
 		unsigned namjestanje = 6;
-		if (brojIgranja <= 3)
+		if (brojIgranja <= 3)	// ako korisnik nije igrao vise od tri puta PRVU igru, onda ovaj uslov omogucava pobijedu
 		{
 			namjestanje = nasumicanBroj(4) + 2;	// namjestanje = korak u kome korisnik pogadja
 			if (namjestanje > 6)
@@ -112,7 +112,7 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 		printf("\n\n<1> - revans\t<0> - glavni meni\n");
 		char c[3] = "1";
 		scanf("%s", c);
-		if (c[0] == '0')											//Ako je brojac == 0 onda je izgubio
+		if (c[0] == '0')			//Ako je brojac == 0 onda je izgubio
 		{
 			StatsUpdate(1, Time(), points, numberOfWins)
 			system("CLS");
@@ -130,7 +130,7 @@ int dodjelaBodova(int brojPokusaja)
 	return (100 / brojPokusaja);
 }
 
-unsigned nasumicanBroj(int namjestanje)
+unsigned nasumicanBroj(int namjestanje)		//generisanje prirodnog broja [0, namjestanje]
 {
 	unsigned nasumican;
 	time_t t;
@@ -147,7 +147,7 @@ int postotak(int pobijeda, int gubitak)
 	return (postotakG - postotakP);
 }
 
-int validanUnos(char* p)
+int validanUnos(char* p)		//provjera da li je unos korektan za datu igru
 {
 	if ((strlen(p) > 2) && (strcmp(p, "101") >= 0))
 		return -1;
