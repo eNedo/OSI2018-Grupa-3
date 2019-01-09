@@ -10,7 +10,7 @@ int is_emptymat(char mat[][3],int i,int j){if(mat[i][j]=='X' || mat[i][j]=='O')r
 int is_empty_with_text(char mat[][3],int i,int j){if(mat[i][j]=='X'|| mat[i][j]=='O'){printf("Pozicija je popunjena.");getch();return 0;}else return 1;}
 
 
-void board(char mat[][3])
+void board(char mat[][3])    //ispis
 {
     system("cls");
     printf("\n\n\tTic Tac Toe\n\n");
@@ -72,36 +72,9 @@ int game_over_igr(char mat[][3],int brojac)
         }
         else return 0;
 }
-int is_exsist(int niz[],int choice,int counter)
-{
 
-    for(int i=0;i<counter;i++)
-        if(choice==niz[i])
-       {printf("Mjesto je popunjeno.\n");
-       getch();
-       return 1;
-       }
-        return 0;
-}
-int is_exsist_for_bot(int niz[],int choice,int counter)
-{
 
-    for(int i=0;i<counter;i++)
-        if(choice==niz[i])
-       return 1;
-        return 0;
-}
-
-void convert_from_number(int broj,int *i,int *j)
-{
-
-    if(broj<4){*i=0;*j=broj-(*i);}
-    else if(3<broj && broj<7){*i=1;*j=broj-(*i);}
-    else {*i=2;*j=broj-(*i);}
-    printf("i:%d j:%d ",*i,*j);
-    getch();
-}
-int is_0_1(int m)
+int is_0_1(int m)  //provjerava dali ste unjeli trazenu vrednost 0 ili 1
 {
     if(m==1)
         return 1;
@@ -124,7 +97,7 @@ do
 {
     choice=0;
     board(mat);
-player = (player % 2) ? 1 : 2;
+player = (player % 2) ? 1 : 2;   //promena igraca
         if(player==1)
             {int red,colone;
                 do{
@@ -135,7 +108,7 @@ player = (player % 2) ? 1 : 2;
 red=--choice/3;
 colone=choice%3;
 choice++;}
-        while(!is_empty_with_text(mat,red,colone));
+        while(!is_empty_with_text(mat,red,colone));   //ne dozvoljava prepisivanje preko vec postojeceg podatka u matrici
 counter++;
 if(choice<10 && choice>0)
  {mat[red][colone]=sign;}
@@ -149,8 +122,8 @@ if(choice<10 && choice>0)
         if(player==2)
         {int c=counter;sign='O';
         if(counter==0)
-        {mat[1][1]=sign;counter++;}
-        for(int k=0;k<3;k++)
+        {mat[1][1]=sign;counter++;}   //ako nema nista ispisano u tabli racunar ce da postavi O na 5 poziciju
+        for(int k=0;k<3;k++)    //kompletan blok sluzi za provjeru dali se u nekom redu nalaze dva O podatka
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
             {
@@ -162,7 +135,7 @@ if(choice<10 && choice>0)
                 }
             }
 
-for(int k=0;k<3;k++)
+for(int k=0;k<3;k++) //kompletan blok sluzi za provjeru dali se u nekom od redova nalaze dva O podatka
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
             {
@@ -173,7 +146,7 @@ for(int k=0;k<3;k++)
                         else if(mat[1][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,0,j)){mat[0][j]='O';counter++;}}
                 }
             }
-            if(c==counter)
+            if(c==counter) //provjera dijagonala za O
             {
                 if(mat[0][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,2)){mat[2][2]='O';counter++;}}
                else if(mat[0][0]==sign && mat[2][2]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
@@ -184,7 +157,7 @@ for(int k=0;k<3;k++)
                else if(mat[2][0]==sign && mat[2][0]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
             }
             sign='X';
-for(int k=0;k<3;k++)
+for(int k=0;k<3;k++) //provjera dali se u nekom od redova nalaze dva X podatka
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
             {
@@ -196,7 +169,7 @@ for(int k=0;k<3;k++)
                 }
             }
 
-for(int k=0;k<3;k++)
+for(int k=0;k<3;k++) //provera dali se u nekoj od kolona nalaze dva X podatka
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
             {
@@ -218,7 +191,7 @@ for(int k=0;k<3;k++)
                else if(mat[2][0]==sign && mat[2][0]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
             }
                         sign='O';
-for(int k=0;k<3;k++)
+for(int k=0;k<3;k++)//provera redova u kojima se nalazi samo jeda O podatak
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
             {
@@ -230,7 +203,7 @@ for(int k=0;k<3;k++)
                 }
             }
 
-for(int k=0;k<3;k++)
+for(int k=0;k<3;k++) //provera kolona u kojima se nalazi samo jedan O podatak
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
                     if(j==k && c==counter)
@@ -241,7 +214,7 @@ for(int k=0;k<3;k++)
                         else if(mat[2][j]==sign && is_emptymat(mat,0,j) && is_emptymat(mat,1,j)){{mat[1][j]='O';counter++;}}
             }
 
-             for(int f=1;f<10 && c==counter;f++)
+             for(int f=1;f<10 && c==counter;f++) //popunjavanje prve prazne pozicije
                 {int red,colone;
           red=--f/3;
           colone=f%3;
@@ -270,7 +243,9 @@ do
 }
 int game_id=4;
 points=number_of_wins;
-StatsUpdate(game_id,time(),points,number_of_wins);
+StatsUpdate(game_id,Time(),points,number_of_wins);
+
 }
+
 
 
