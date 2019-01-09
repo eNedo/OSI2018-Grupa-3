@@ -2,12 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<conio.h>
+#include<time.h>
 
-game_four()
-{
-    
 
-int is_empty(char mat[][3],int i,int j){if(mat[i][j]=='X'|| mat[i][j]=='O')return 0;else return 1;}
+
+int is_emptymat(char mat[][3],int i,int j){if(mat[i][j]=='X' || mat[i][j]=='O')return 0;else return 1;}
 int is_empty_with_text(char mat[][3],int i,int j){if(mat[i][j]=='X'|| mat[i][j]=='O'){printf("Pozicija je popunjena.");getch();return 0;}else return 1;}
 
 
@@ -111,7 +110,7 @@ int is_0_1(int m)
         else return 0;
 
 }
-int main()
+void game_four()
 {
     int number_of_wins=0,points=0;
 int m=1;
@@ -157,9 +156,9 @@ if(choice<10 && choice>0)
             {
                 if(i==k && c==counter)
                 {
-                    if((mat[i][0]==sign) && (mat[i][1]==sign) ){if(is_empty(mat,i,2)){mat[i][2]='O';counter++;}}
-                    else if(mat[i][0]==sign && mat[i][2]==sign){if(is_empty(mat,i,1)){mat[i][1]='O';counter++;}}
-                        else if(mat[i][1]==sign && mat[i][2]==sign){if(is_empty(mat,i,0)){mat[i][0]='O';counter++;}}
+                    if((mat[i][0]==sign) && (mat[i][1]==sign) ){if(is_emptymat(mat,i,2)){mat[i][2]='O';counter++;}}
+                    else if(mat[i][0]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,1)){mat[i][1]='O';counter++;}}
+                        else if(mat[i][1]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,0)){mat[i][0]='O';counter++;}}
                 }
             }
 
@@ -169,20 +168,20 @@ for(int k=0;k<3;k++)
             {
                 if(j==k && c==counter)
                 {
-                    if((mat[0][j]==sign) && (mat[1][j]==sign) ){if(is_empty(mat,2,j)){mat[2][j]='O';counter++;}}
-                    else if(mat[0][j]==sign && mat[2][j]==sign){if(is_empty(mat,1,j)){mat[1][j]='O';counter++;}}
-                        else if(mat[1][j]==sign && mat[2][j]==sign){if(is_empty(mat,0,j)){mat[0][j]='O';counter++;}}
+                    if((mat[0][j]==sign) && (mat[1][j]==sign) ){if(is_emptymat(mat,2,j)){mat[2][j]='O';counter++;}}
+                    else if(mat[0][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,1,j)){mat[1][j]='O';counter++;}}
+                        else if(mat[1][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,0,j)){mat[0][j]='O';counter++;}}
                 }
             }
             if(c==counter)
             {
-                if(mat[0][0]==sign && mat[1][1]==sign){if(is_empty(mat,2,2)){mat[2][2]='O';counter++;}}
-               else if(mat[0][0]==sign && mat[2][2]==sign){if(is_empty(mat,1,1)){mat[1][1]='O';counter++;}}
-               else if(mat[1][1]==sign && mat[2][2]==sign){if(is_empty(mat,0,0)){mat[0][0]='O';counter++;}}
+                if(mat[0][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,2)){mat[2][2]='O';counter++;}}
+               else if(mat[0][0]==sign && mat[2][2]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
+               else if(mat[1][1]==sign && mat[2][2]==sign){if(is_emptymat(mat,0,0)){mat[0][0]='O';counter++;}}
 
-              else if(mat[0][2]==sign && mat[1][1]==sign){if(is_empty(mat,2,0)){mat[2][0]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[1][1]==sign){if(is_empty(mat,0,2)){mat[0][2]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[2][0]==sign){if(is_empty(mat,1,1)){mat[1][1]='O';counter++;}}
+              else if(mat[0][2]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,0)){mat[2][0]='O';counter++;}}
+               else if(mat[2][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,0,2)){mat[0][2]='O';counter++;}}
+               else if(mat[2][0]==sign && mat[2][0]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
             }
             sign='X';
 for(int k=0;k<3;k++)
@@ -191,9 +190,9 @@ for(int k=0;k<3;k++)
             {
                 if(i==k && c==counter)
                 {
-                    if((mat[i][0]==sign) && (mat[i][1]==sign) ){if(is_empty(mat,i,2)){mat[i][2]='O';counter++;}}
-                    else if(mat[i][0]==sign && mat[i][2]==sign){if(is_empty(mat,i,1)){mat[i][1]='O';counter++;}}
-                        else if(mat[i][1]==sign && mat[i][2]==sign){if(is_empty(mat,i,0)){mat[i][0]='O';counter++;}}
+                    if((mat[i][0]==sign) && (mat[i][1]==sign) ){if(is_emptymat(mat,i,2)){mat[i][2]='O';counter++;}}
+                    else if(mat[i][0]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,1)){mat[i][1]='O';counter++;}}
+                        else if(mat[i][1]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,0)){mat[i][0]='O';counter++;}}
                 }
             }
 
@@ -203,20 +202,20 @@ for(int k=0;k<3;k++)
             {
                 if(j==k && c==counter)
                 {
-                    if((mat[0][j]==sign) && (mat[1][j]==sign) ){if(is_empty(mat,2,j)){mat[2][j]='O';counter++;}}
-                    else if(mat[0][j]==sign && mat[2][j]==sign){if(is_empty(mat,1,j)){mat[1][j]='O';counter++;}}
-                        else if(mat[1][j]==sign && mat[2][j]==sign){if(is_empty(mat,0,j)){mat[0][j]='O';counter++;}}
+                    if((mat[0][j]==sign) && (mat[1][j]==sign) ){if(is_emptymat(mat,2,j)){mat[2][j]='O';counter++;}}
+                    else if(mat[0][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,1,j)){mat[1][j]='O';counter++;}}
+                        else if(mat[1][j]==sign && mat[2][j]==sign){if(is_emptymat(mat,0,j)){mat[0][j]='O';counter++;}}
                 }
             }
             if(c==counter)
             {
-                if(mat[0][0]==sign && mat[1][1]==sign){if(is_empty(mat,2,2)){mat[2][2]='O';counter++;}}
-               else if(mat[0][0]==sign && mat[2][2]==sign){if(is_empty(mat,1,1)){mat[1][1]='O';counter++;}}
-               else if(mat[1][1]==sign && mat[2][2]==sign){if(is_empty(mat,0,0)){mat[0][0]='O';counter++;}}
+                if(mat[0][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,2)){mat[2][2]='O';counter++;}}
+               else if(mat[0][0]==sign && mat[2][2]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
+               else if(mat[1][1]==sign && mat[2][2]==sign){if(is_emptymat(mat,0,0)){mat[0][0]='O';counter++;}}
 
-              else if(mat[0][2]==sign && mat[1][1]==sign){if(is_empty(mat,2,0)){mat[2][0]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[1][1]==sign){if(is_empty(mat,0,2)){mat[0][2]='O';counter++;}}
-               else if(mat[2][0]==sign && mat[2][0]==sign){if(is_empty(mat,1,1)){mat[1][1]='O';counter++;}}
+              else if(mat[0][2]==sign && mat[1][1]==sign){if(is_emptymat(mat,2,0)){mat[2][0]='O';counter++;}}
+               else if(mat[2][0]==sign && mat[1][1]==sign){if(is_emptymat(mat,0,2)){mat[0][2]='O';counter++;}}
+               else if(mat[2][0]==sign && mat[2][0]==sign){if(is_emptymat(mat,1,1)){mat[1][1]='O';counter++;}}
             }
                         sign='O';
 for(int k=0;k<3;k++)
@@ -225,9 +224,9 @@ for(int k=0;k<3;k++)
             {
                 if(i==k && c==counter)
                 {
-                    if((mat[i][0]==sign) && is_empty(mat,i,1) && is_empty(mat,i,2) ){{mat[i][2]='O';counter++;}}
-                    else if(mat[i][1]==sign && is_empty(mat,i,0) && is_empty(mat,i,2)){{mat[i][2]='O';counter++;}}
-                        else if(mat[i][2]==sign && is_empty(mat,i,0) && is_empty(mat,i,1)){{mat[i][1]='O';counter++;}}
+                    if((mat[i][0]==sign) && is_emptymat(mat,i,1) && is_emptymat(mat,i,2) ){{mat[i][2]='O';counter++;}}
+                    else if(mat[i][1]==sign && is_emptymat(mat,i,0) && is_emptymat(mat,i,2)){{mat[i][2]='O';counter++;}}
+                        else if(mat[i][2]==sign && is_emptymat(mat,i,0) && is_emptymat(mat,i,1)){{mat[i][1]='O';counter++;}}
                 }
             }
 
@@ -237,9 +236,9 @@ for(int k=0;k<3;k++)
                     if(j==k && c==counter)
             {
 
-                    if((mat[0][j]==sign) && is_empty(mat,1,j) && is_empty(mat,2,j) ){{mat[2][j]='O';counter++;}}
-                    else if(mat[1][j]==sign && is_empty(mat,0,j) && is_empty(mat,2,j)){{mat[2][j]='O';counter++;}}
-                        else if(mat[2][j]==sign && is_empty(mat,0,j) && is_empty(mat,1,j)){{mat[1][j]='O';counter++;}}
+                    if((mat[0][j]==sign) && is_emptymat(mat,1,j) && is_emptymat(mat,2,j) ){{mat[2][j]='O';counter++;}}
+                    else if(mat[1][j]==sign && is_emptymat(mat,0,j) && is_emptymat(mat,2,j)){{mat[2][j]='O';counter++;}}
+                        else if(mat[2][j]==sign && is_emptymat(mat,0,j) && is_emptymat(mat,1,j)){{mat[1][j]='O';counter++;}}
             }
 
              for(int f=1;f<10 && c==counter;f++)
@@ -248,7 +247,7 @@ for(int k=0;k<3;k++)
           colone=f%3;
           f++;
 
-                    if(is_empty(mat,red,colone))
+                    if(is_emptymat(mat,red,colone))
           {
               mat[red][colone]='O';
               counter++;
@@ -270,8 +269,8 @@ do
 
 }
 int game_id=4;
-points=0;
-StatsUpdate(game_id,Time(),points,number_of_wins);
-return 0;
+points=number_of_wins;
+StatsUpdate(game_id,time(),points,number_of_wins);
 }
-}
+
+
