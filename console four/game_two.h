@@ -12,7 +12,7 @@ void Game_two()
     {
         char pitanje[35], odg1[15], odg2[15], odg3[15], c;
         int  unos_odg, tac_odg, i;
-        int  random_number, redni_br_pitanja = 0,  svi_odg_tacni = 0, pocetni_pomjeraj = 0, niz[5] ;
+        int  random_number,   svi_odg_tacni = 0, pocetni_pomjeraj = 0, niz[5] ;
         for(i = 0; i < 5; i++)
         {
             int j = 0, redni_br_pitanja = 0;
