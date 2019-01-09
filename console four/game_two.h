@@ -33,7 +33,6 @@ void Game_two()
                     j++;
                 }
             }
-
         niz[i] = random_number;
         int pocetni_pomjeraj = 0;
         while ( (c = fgetc(fp)) != EOF && redni_br_pitanja < random_number )
