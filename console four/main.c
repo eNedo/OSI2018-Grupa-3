@@ -13,21 +13,8 @@
 #include "keys.h"
 int main()
 {
+	StartCheck();
 	fullscreen();
 	LogIn();
-	
- 
-	system("pause");
-	return 0;
+  	return 0;
 }
-
-
-
-
-
-/*
-struct tm tm;
-localtime_s(&tm, &(time_t) { time(NULL) });
-char *time = malloc(sizeof(char) * 26);
-asctime_s(time, 26, &tm);
-*/
