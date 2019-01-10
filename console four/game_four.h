@@ -1,39 +1,28 @@
 #pragma once
-#include <stdio.h>
+#include <Windows.h>
 #include <stdlib.h>
-#include<conio.h>
-#include<time.h>
-
-
-
+#include <stdio.h>
+#include <conio.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
 int is_emptymat(char mat[][3],int i,int j){if(mat[i][j]=='X' || mat[i][j]=='O')return 0;else return 1;}
-int is_empty_with_text(char mat[][3],int i,int j){if(mat[i][j]=='X'|| mat[i][j]=='O'){printf("Pozicija je popunjena.");getch();return 0;}else return 1;}
-
-
+int is_empty_with_text(char mat[][3],int i,int j){if(mat[i][j]=='X'|| mat[i][j]=='O'){printf("Positcion is not empty.");getch();return 0;}else return 1;}
 void board(char mat[][3])    //ispis
 {
     system("cls");
     printf("\n\n\tTic Tac Toe\n\n");
-
     printf("Player 1 (X)  -  Player 2 (O)\n\n\n");
-
-
     printf("     |     |     \n");
     printf("  %c  |  %c  |  %c \n",mat[0][0],mat[0][1],mat[0][2]);
-
     printf("_____|_____|_____\n");
     printf("     |     |     \n");
-
     printf("  %c  |  %c  |  %c \n",mat[1][0],mat[1][1],mat[1][2]);
-
     printf("_____|_____|_____\n");
     printf("     |     |     \n");
-
     printf("  %c  |  %c  |  %c \n",mat[2][0], mat[2][1],mat[2][2]);
-
     printf("     |     |     \n\n");
 }
-
 int win(char mat[][3],char sign)
 {
     if((mat[0][0]==sign && mat[0][1]==sign && mat[0][2]==sign)
@@ -72,8 +61,6 @@ int game_over_igr(char mat[][3],int brojac)
         }
         else return 0;
 }
-
-
 int is_0_1(int m)  //provjerava dali ste unjeli trazenu vrednost 0 ili 1
 {
     if(m==1)
@@ -83,15 +70,27 @@ int is_0_1(int m)  //provjerava dali ste unjeli trazenu vrednost 0 ili 1
         else return 0;
 
 }
+int validanUnos(char* p)		//provjera da li je unos korektan za datu igru
+{
+	if ((strlen(p) > 1) && (strcmp(p, "10") >= 0))
+		return -1;
+	if (p[0] == '-')
+		return -1;
+		if (!isdigit(p[0]))
+			return -1;
+	int res = atoi(p);
+	return res;
+}
 void game_four()
 {
     int number_of_wins=0,points=0;
 int m=1;
 while(m)
 {
-
 int counter=0,choice=0,player=2;
+
 char mat[3][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'}};
+char choicex[100];
 char sign;
 do
 {
@@ -100,10 +99,17 @@ do
 player = (player % 2) ? 1 : 2;   //promena igraca
         if(player==1)
             {int red,colone;
+            choice=0;
                 do{
+                         do{
                         board(mat);
         printf("Player %d, enter a number:", player);
-        scanf("%d", &choice);
+        scanf("%s",choicex);
+        choice=validanUnos(choicex);
+        if(choice==-1)
+        {printf("Invalid move.");getch();}}
+        while(choice==-1);
+
         sign='X';
 red=--choice/3;
 colone=choice%3;
@@ -134,7 +140,6 @@ if(choice<10 && choice>0)
                         else if(mat[i][1]==sign && mat[i][2]==sign){if(is_emptymat(mat,i,0)){mat[i][0]='O';counter++;}}
                 }
             }
-
 for(int k=0;k<3;k++) //kompletan blok sluzi za provjeru dali se u nekom od redova nalaze dva O podatka
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
@@ -202,7 +207,6 @@ for(int k=0;k<3;k++)//provera redova u kojima se nalazi samo jeda O podatak
                         else if(mat[i][2]==sign && is_emptymat(mat,i,0) && is_emptymat(mat,i,1)){{mat[i][1]='O';counter++;}}
                 }
             }
-
 for(int k=0;k<3;k++) //provera kolona u kojima se nalazi samo jedan O podatak
                 for(int i=0;i<3;i++)
                 for(int j=0;j<3;j++)
@@ -227,25 +231,17 @@ for(int k=0;k<3;k++) //provera kolona u kojima se nalazi samo jedan O podatak
             }
           }
              }
-
-
-
         player++;
         if(win(mat,'X'))
             number_of_wins++;
-
 }
 while(!game_over_igr(mat,counter));
-
 do
-    {printf("New game: Yes[1] No[0]:");scanf("%d",&m);}while(!is_0_1(m));
-
+    {char mm[100];
+        printf("New game: Yes[1] No[0]:");scanf("%s",mm);m=validanUnos(mm);}while(!is_0_1(m));
 }
 int game_id=4;
 points=number_of_wins;
-StatsUpdate(game_id,Time(),points,number_of_wins);
-
+//StatsUpdate(game_id,Time(),points,number_of_wins);
 }
-
-
 
