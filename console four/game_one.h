@@ -1,29 +1,22 @@
+#pragma once 
+#include "stats.h"
+#include "utility.h"
 #include <stdio.h>
 #include <time.h>
 #include <Windows.h>
 #include <ctype.h>
 #include <string.h>
-#include "utility.h"
-#include "stats.h"
-
-void prvaIgra(int brojIgranja, int pobijede, int gubici);		// brojIgranja - ukupan broj pokretanja PRVE IGRE od strane korisnika; broj pobijeda, broj gubitaka
 void proces(int, int, int);
-unsigned nasumicanBroj(int);
-int dodjelaBodova(int);
-int postotak(int, int);
-int validanUnos(char*);
 
 void prvaIgra(int brojIgranja, int pobijeda, int gubitak)
 {
 	proces(brojIgranja, pobijeda, gubitak);
 }
-
 void proces(int brojIgranja, int pobijeda, int gubitak)
 {
 	int n = 1, points = 0, numberOfWins = NumberOfWins();
 	while (n == 1)
 	{
-		IncNumberOfPlays();
 		unsigned unos = 101, rezultat = nasumicanBroj(101);
 		int brojac = 5, rb = 1, posto = postotak(pobijeda, gubitak), valid;
 		char unosString[11];
@@ -102,28 +95,26 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 				printf("Osvojili ste 0 bodova.\n");
 			}
 		}
-		if (brojac > 0)	//Ako je brojac == 0 onda je izgubio
+		if (brojac > 0)
 		{
 			points += dodjelaBodova(rb - 1);
-			numberOfWins++;	
-			IncNumberOfWins(); 
+			numberOfWins++;
 		}
-		else if(brojac == 0) 
-			IncNumberOfLosses(); 
+		else if (brojac == 0)
+			IncNumberOfLosses();
 		int prolaz = 0;
 		while (prolaz != 1)
 		{
 			printf("\n\n<1> - revans\t<0> - glavni meni\n");
-			char c[6];
+			char c[5] = "1";
 			scanf("%s", c);
-			if (c[0] == '0' && (strlen(c) == 1))
+			if (c[0] == '0')	//Ako je brojac == 0 onda je izgubio
 			{
-				StatsUpdate(1, Time(), points, numberOfWins); 
-				system("CLS");
-				prolaz = 1;
-				MainMenu(); 
+				StatsUpdate(1, Time(), points, numberOfWins);
+				system("CLS"); 
+				MainMenu();
 			}
-			else if (c[0] == '1' && (strlen(c) == 1))
+			else if (c[0] == '1')
 			{
 				system("CLS"); prolaz = 1;
 			}
@@ -160,15 +151,3 @@ int postotak(int pobijeda, int gubitak)
 	return (postotakG - postotakP);
 }
 
-int validanUnos(char* p)		//provjera da li je unos korektan za datu igru
-{
-	if ((strlen(p) > 2) && (strcmp(p, "101") >= 0))
-		return -1;
-	if (p[0] == '-')
-		return -1;
-	for (int i = 0; i < strlen(p); i++)
-		if (!isdigit(p[i]))
-			return -1;
-	int res = atoi(p);
-	return res;
-}
