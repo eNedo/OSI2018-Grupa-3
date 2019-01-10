@@ -23,6 +23,7 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 	int n = 1, points = 0, numberOfWins = NumberOfWins();
 	while (n == 1)
 	{
+		IncNumberOfPlays();
 		unsigned unos = 101, rezultat = nasumicanBroj(101);
 		int brojac = 5, rb = 1, posto = postotak(pobijeda, gubitak), valid;
 		char unosString[11];
@@ -101,10 +102,11 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 				printf("Osvojili ste 0 bodova.\n");
 			}
 		}
-		if (brojac > 0)
+		if (brojac > 0)	//Ako je brojac == 0 onda je izgubio
 		{
 			points += dodjelaBodova(rb - 1);
-			numberOfWins++;
+			numberOfWins++;	
+			IncNumberOfWins(); 
 		}
 		else if(brojac == 0) 
 			IncNumberOfLosses(); 
@@ -112,12 +114,13 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 		while (prolaz != 1)
 		{
 			printf("\n\n<1> - revans\t<0> - glavni meni\n");
-			char c[5] = "1";
+			char c[6];
 			scanf("%s", c);
-			if (c[0] == '0' && (strlen(c) == 1))	//Ako je brojac == 0 onda je izgubio
+			if (c[0] == '0' && (strlen(c) == 1))
 			{
 				StatsUpdate(1, Time(), points, numberOfWins); 
 				system("CLS");
+				prolaz = 1;
 				MainMenu(); 
 			}
 			else if (c[0] == '1' && (strlen(c) == 1))
