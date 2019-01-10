@@ -5,8 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-void ShowStatistics(); 
- typedef int bool;
+
 #define true 1
 #define false 0
 void MoveCursorNextRow()
@@ -30,7 +29,7 @@ void MoveCursorToMid()
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
 	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
 	rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-	COORD pos = { columns /3  , rows /3  };
+	COORD pos = { columns / 3  , rows / 3 };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 void MainMenu()
@@ -47,45 +46,45 @@ void MainMenu()
 	printf("(6) Izlaz                        \n");  MoveCursorNextRow();	// 1-6 
 	printf("*********************************\n");  MoveCursorNextRow();
 	char x;
-	int f,err=0; 
+	int f, err = 0;
 	for (;;)
 	{
 		scanf_s("%c", &x);
-		if (isalpha(x)) { x = '0'; err=1; }
-		f = atoi(&x); 
-		if ((f >= 1) && (f <= 6)) break; 
-		if ( (err==1) && ((isdigit(f)==0) || (f<1) || (f>6)) )	// check is input valid
-						{
-						MoveCursorNextRow();
-						printf("Greska! Unesite validan broj! ;)");
-						err = 0; 
-						Sleep(500); 
-						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"); 
-						printf("                                                                ");
-						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-						}
+		if (isalpha(x)) { x = '0'; err = 1; }
+		f = atoi(&x);
+		if ((f >= 1) && (f <= 6)) break;
+		if ((err == 1) && ((isdigit(f) == 0) || (f < 1) || (f > 6)))	// check is input valid
+		{
+			MoveCursorNextRow();
+			printf("Greska! Unesite validan broj! ;)");
+			err = 0;
+			Sleep(500);
+			printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+			printf("                                                                ");
+			printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+			printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		}
 
-	}	
+	}
 	switch (x)
 	{
-	case 1 : 
-		cls(); 
+	case 1:
+		cls();
 		//prvaIgra()
-		break; 
-	case 2: 
+		break;
+	case 2:
 		//drugaigra()
-		break; 
-	case 3: 
-		break; 
-	case 4: 
-		break; 
-	case 5: 
-		ShowStatistics(); 
-		break; 
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		ShowStatistics();
+		break;
 	case 6:
-		return; 
-		break; 
+		return;
+		break;
 	}
 
 }
@@ -98,16 +97,28 @@ void CreateNewUser(char *username)		//adding new user
 		fclose(users1);
 	}
 }
+int  IsThereUser()
+{
+	FILE *users;
+	fopen_s(&users, "users.txt", "r");	// check 
+	char  buffer[20];					// for first  playing  
+	if (users)
+	{
+		if (fgets(buffer, 20, users) >= 0) return 1;
+		fclose(users);
+	}
+	else return 0;
+}
 void LogIn()
 {
-	MoveCursorToMid(); 
- 	if (IsThereUser()==false) {
- 		char *name=malloc(sizeof(char)*20);
+	MoveCursorToMid();
+	if (IsThereUser() == 0) {
+		char *name = (char*)malloc(sizeof(char) * 20);
 		printf("Unesite korisnicko ime:  \n   ");
 		MoveCursorNextRow();
 		fgets(name, 20, stdin);
 		CreateNewUser(name);
-	}			
+	}
 	else
 	{
 		char  buffer[20];
@@ -117,20 +128,7 @@ void LogIn()
 		MoveCursorNextRow();
 		printf("POZDRAV %s", buffer);
 		Sleep(3000);
-		Beep(1500, 500);
-		MainMenu(); 
+		Beep(1500, 500); 
+		MainMenu();
 	}
 }
-bool IsThereUser()	
-{
-	FILE *users; 
-	fopen_s(&users,"users.txt", "r");	// check 
-	char  buffer[20];					// for first  playing  
-	if (users)							 
-	{ 
-		if(fgets(buffer, 20, users )>=0) return true; 
-		fclose(users);
-	}
-	else return false; 
-}
-
