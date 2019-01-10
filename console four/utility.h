@@ -1,3 +1,4 @@
+#pragma once 
 #include <Windows.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -5,8 +6,26 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
- #define DELAY 1000				//delay from "pozdrav ime" to main menu 
+void Game_two();
+void MainMenu();
+void prvaIgra();
+ void game_four();
+void Game_Three(); 
+void ShowStatistics();
+#define DELAY 1000				//delay from "pozdrav ime" to main menu 
 #define DELAY_ERROR 400			//delay between menus 
+int validanUnos(char* p)		//provjera da li je unos korektan za datu igru
+{
+	if ((strlen(p) > 2) && (strcmp(p, "101") >= 0))
+		return -1;
+	if (p[0] == '-')
+		return -1;
+	for (int i = 0; i < strlen(p); i++)
+		if (!isdigit(p[i]))
+			return -1;
+	int res = atoi(p);
+	return res;
+}
 char* Time()					// returns system time 
 {
 	struct tm tm;		
@@ -15,7 +34,6 @@ char* Time()					// returns system time
 	asctime_s(time, 26, &tm);
 	return time;
 } 
-void ShowStatistics();
 #define true 1
 #define false 0
 void StartCheck() 
@@ -53,67 +71,20 @@ void MoveCursorToMid()
 	COORD pos = { columns /3  , rows /3  };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
-void MainMenu()
+int IsThereUser()
 {
-	cls();
-	MoveCursorToMid();
-	printf("    *********************************\n");  MoveCursorNextRow();
-	printf("(1) Pogadjanje zamisljenog broja \n");  MoveCursorNextRow();
-	printf("(2) Kviz                         \n");  MoveCursorNextRow();
-	printf("(3) Loto                         \n");  MoveCursorNextRow();
-	printf("(4) IX-OX                        \n");  MoveCursorNextRow();
-	printf("*********************************\n");  MoveCursorNextRow();
-	printf("(5) Prikaz statistike            \n");  MoveCursorNextRow();	// main menu
-	printf("(6) Izlaz                        \n");  MoveCursorNextRow();	// 1-6 
-	printf("*********************************\n");  MoveCursorNextRow();
-	char x;
-	int f,err=0; 
-	for (;;)
+	FILE *users;
+	fopen_s(&users, "user.txt", "r");	// check existance of user 
+	char  buffer[20];					// for first  playing  
+	if (users)
 	{
-		scanf_s("%c", &x,1);
-		if (isalpha(x)) { x = '0'; err=1; }
-		f = atoi(&x);
-		if ((f >= 1) && (f <= 6)) break; 
-		if ((f < 1) || (f > 6)) { err = 1; }
-		if ( (err==1) && ((isdigit(f)==0) || (f<1) || (f>6)) )	// check is input valid
-						{
-						MoveCursorNextRow();
-						printf("Greska! Unesite validan broj! ;)");
-						err = 0; 
-						Sleep(DELAY_ERROR); 
-						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"); 
-						printf("                                                                ");
-						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-						printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-						}					// deletes invalid inputs 
-
-	}	
-	switch (x)
-	{
-	case '1':
-		cls();
-		prvaIgra(0, 0, 0); 
-		break;
-	case '2':
-		cls();
-		Game_two();
-		break;
-	case '3':
-		cls();
-		Game_Three();
-		break;
-	case '4':
-		cls();
-		game_four();
-		break;
-	case '5':
-		ShowStatistics();
-		break;
-	case '6':
-		return;
-		break;
+		if (fgets(buffer, 20, users) >= 0) return 1;
+		fclose(users);
 	}
+	else return 0;
 }
+
+
 void CreateNewUser(char *username)		//adding new user 
 {
 	FILE *users1;
@@ -123,16 +94,17 @@ void CreateNewUser(char *username)		//adding new user
 		fclose(users1);
 	}
 }
+
 void LogIn()
 {
-	MoveCursorToMid(); 
- 	if (IsThereUser()==0) {
- 		char *name=malloc(sizeof(char)*20);
+	MoveCursorToMid();
+	if (IsThereUser() == 0) {
+		char *name = malloc(sizeof(char) * 20);
 		printf("Unesite korisnicko ime:  \n   ");
 		MoveCursorNextRow();
 		fgets(name, 20, stdin);		// creating new user if it's first log in 
 		CreateNewUser(name);
-	}			
+	}
 	else
 	{
 		char  buffer[20];
@@ -143,19 +115,68 @@ void LogIn()
 		printf("POZDRAV %s", buffer);
 		Sleep(DELAY);
 		Beep(1500, 500);
-		MainMenu(); 
+		MainMenu();
 	}
-}
-int IsThereUser()	
-{
-	FILE *users; 
-	fopen_s(&users,"user.txt", "r");	// check existance of user 
-	char  buffer[20];					// for first  playing  
-	if (users)							 
-	{ 
-		if(fgets(buffer, 20, users )>=0) return 1; 
-		fclose(users);
-	}
-	else return 0; 
 }
 
+	void MainMenu()
+	{
+		cls();
+		MoveCursorToMid();
+		printf("    *********************************\n");  MoveCursorNextRow();
+		printf("(1) Pogadjanje zamisljenog broja \n");  MoveCursorNextRow();
+		printf("(2) Kviz                         \n");  MoveCursorNextRow();
+		printf("(3) Loto                         \n");  MoveCursorNextRow();
+		printf("(4) IX-OX                        \n");  MoveCursorNextRow();
+		printf("*********************************\n");  MoveCursorNextRow();
+		printf("(5) Prikaz statistike            \n");  MoveCursorNextRow();	// main menu
+		printf("(6) Izlaz                        \n");  MoveCursorNextRow();	// 1-6 
+		printf("*********************************\n");  MoveCursorNextRow();
+		char x;
+		int f, err = 0;
+		for (;;)
+		{
+			scanf_s("%c", &x, 1);
+			if (isalpha(x)) { x = '0'; err = 1; }
+			f = atoi(&x);
+			if ((f >= 1) && (f <= 6)) break;
+			if ((f < 1) || (f > 6)) { err = 1; }
+			if ((err == 1) && ((isdigit(f) == 0) || (f<1) || (f>6)))	// check is input valid
+			{
+				MoveCursorNextRow();
+				printf("Greska! Unesite validan broj! ;)");
+				err = 0;
+				Sleep(DELAY_ERROR);
+				printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+				printf("                                                                ");
+				printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+				printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+			}					// deletes invalid inputs 
+
+		}
+		switch (x)
+		{
+		case '1':
+			cls();
+			prvaIgra(NumberOfPlays(), NumberOfWins(), NumberOfLosses());
+			break;
+		case '2':
+			cls();
+			Game_two();
+			break;
+		case '3':
+			cls();
+			Game_Three();
+			break;
+		case '4':
+			cls();
+			game_four();
+			break;
+		case '5':
+			ShowStatistics();
+			break;
+		case '6':
+			exit(0);
+ 			break;
+		}
+	}
