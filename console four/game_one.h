@@ -1,13 +1,12 @@
-#pragma once
 #include <stdio.h>
 #include <time.h>
 #include <Windows.h>
 #include <ctype.h>
 #include <string.h>
+#include "utility.h"
+#include "stats.h"
 
 void prvaIgra(int brojIgranja, int pobijede, int gubici);		// brojIgranja - ukupan broj pokretanja PRVE IGRE od strane korisnika; broj pobijeda, broj gubitaka
-
-
 void proces(int, int, int);
 unsigned nasumicanBroj(int);
 int dodjelaBodova(int);
@@ -107,19 +106,30 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 			points += dodjelaBodova(rb - 1);
 			numberOfWins++;
 		}
-		else if(brojac == 0)
-			IncNumberOfLosses();
-		printf("\n\n<1> - revans\t<0> - glavni meni\n");
-		char c[3] = "1";
-		scanf("%s", c);
-		if (c[0] == '0')			//Ako je brojac == 0 onda je izgubio
+		else if(brojac == 0) 
+			IncNumberOfLosses(); 
+		int prolaz = 0;
+		while (prolaz != 1)
 		{
-			StatsUpdate(1, Time(), points, numberOfWins)
-			system("CLS");
-			MainMenu();
+			printf("\n\n<1> - revans\t<0> - glavni meni\n");
+			char c[5] = "1";
+			scanf("%s", c);
+			if (c[0] == '0')	//Ako je brojac == 0 onda je izgubio
+			{
+				StatsUpdate(1, Time(), points, numberOfWins); 
+				system("CLS");
+				MainMenu(); 
+			}
+			else if (c[0] == '1')
+			{
+				system("CLS"); prolaz = 1;
+			}
+			else
+			{
+				system("CLS");
+				printf("Unos nije validan. Ponovite!\n");
+			}
 		}
-		else if (c[0] == '1')
-			system("CLS");
 	}
 }
 
