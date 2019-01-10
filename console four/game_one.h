@@ -114,13 +114,13 @@ void proces(int brojIgranja, int pobijeda, int gubitak)
 			printf("\n\n<1> - revans\t<0> - glavni meni\n");
 			char c[5] = "1";
 			scanf("%s", c);
-			if (c[0] == '0')	//Ako je brojac == 0 onda je izgubio
+			if (c[0] == '0' && (strlen(c) == 1))	//Ako je brojac == 0 onda je izgubio
 			{
 				StatsUpdate(1, Time(), points, numberOfWins); 
 				system("CLS");
 				MainMenu(); 
 			}
-			else if (c[0] == '1')
+			else if (c[0] == '1' && (strlen(c) == 1))
 			{
 				system("CLS"); prolaz = 1;
 			}
